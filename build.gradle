@@ -20,9 +20,12 @@ repositories {
 }
 
 dependencies {
-    runtimeOnly "com.bulenkov:darcula:2018.2"
+    //runtimeOnly "com.bulenkov:darcula:2018.2"
+    runtimeOnly "com.formdev:flatlaf:1.4"
     implementation "org.java-websocket:Java-WebSocket:1.4.0"
     runtimeOnly "org.slf4j:slf4j-simple:1.7.28"
+
+
 }
 
 

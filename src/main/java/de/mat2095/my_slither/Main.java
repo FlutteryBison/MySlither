@@ -12,7 +12,7 @@ public final class Main {
         // workaround to fix issue on linux: https://github.com/bulenkov/Darcula/issues/29
         UIManager.getFont("Label.font");
         try {
-            UIManager.setLookAndFeel("com.bulenkov.darcula.DarculaLaf");
+            UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarculaLaf");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
