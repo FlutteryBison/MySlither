@@ -95,6 +95,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
         ex.printStackTrace();
     }
 
+    //recieves incoming web socket messages
     @Override
     public void onMessage(ByteBuffer bytes) { // TODO: use first two bytes
         byte[] b = bytes.array();
@@ -389,19 +390,27 @@ final class MySlitherWebSocketClient extends WebSocketClient {
         int snakeID = (data[3] << 8) | data[4];
 
         synchronized (view.modelLock) {
+            double newX = 0;
+            double newY = 0;
             Snake snake = model.getSnake(snakeID);
-            SnakeBodyPart head = snake.body.getFirst();
 
-            double newX = absoluteCoords ? (data[5] << 8) | data[6] : head.x + data[5] - 128;
-            double newY = absoluteCoords ? (data[7] << 8) | data[8] : head.y + data[6] - 128;
+            //add two snake parts
+            for(int i=0; i<2; i++)
+            {
+                SnakeBodyPart head = snake.body.getFirst();
 
-            if (newBodyPart) {
-                snake.setFam(((data[absoluteCoords ? 9 : 7] << 16) | (data[absoluteCoords ? 10 : 8] << 8) | (data[absoluteCoords ? 11 : 9])) / ANGLE_CONSTANT);
-            } else {
-                snake.body.pollLast();
+                newX = absoluteCoords ? (data[5] << 8) | data[6] : head.x + data[5] - 128;
+                newY = absoluteCoords ? (data[7] << 8) | data[8] : head.y + data[6] - 128;
+
+                if (newBodyPart) {
+                    snake.setFam(((data[absoluteCoords ? 9 : 7] << 16) | (data[absoluteCoords ? 10 : 8] << 8) | (data[absoluteCoords ? 11 : 9])) / ANGLE_CONSTANT);
+                } else {
+                    snake.body.pollLast();
+                }
+
+                snake.body.addFirst(new SnakeBodyPart(newX, newY));
             }
 
-            snake.body.addFirst(new SnakeBodyPart(newX, newY));
 
             snake.x = newX;
             snake.y = newY;

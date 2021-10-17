@@ -12,6 +12,7 @@ class Snake {
     double wang, ang;
     double sp, tsp;
     private double fam;
+    //TODO store color in each body part paint this color in paint component method in MySlitherCanvas
     final Deque<SnakeBodyPart> body;
     private final MySlitherModel model;
 
