@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Timer;
+import java.util.Random;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
@@ -295,7 +296,15 @@ final class MySlitherJFrame extends JFrame {
         switch (status) {
             case CONNECTING:
                 setStatus(Status.CONNECTED);
-                client.sendInitRequest(snake.getSelectedIndex(), name.getText());
+                if(snake.getSelectedIndex() == 65)
+                {
+                    Random rand = new Random();
+                    int randomNum = rand.nextInt((65 - 0) + 1);
+                    client.sendInitRequest(randomNum, name.getText());
+                    System.out.println("random selected skin = "+ randomNum);
+                }
+                else{
+                    client.sendInitRequest(snake.getSelectedIndex(), name.getText());}
                 break;
             case DISCONNECTING:
                 disconnect();
