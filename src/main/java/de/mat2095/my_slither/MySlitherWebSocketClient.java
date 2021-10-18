@@ -74,19 +74,19 @@ final class MySlitherWebSocketClient extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake sh) {
-        view.log("connected: " + sh.getHttpStatusMessage());
+        //view.log("connected: " + sh.getHttpStatusMessage());
         view.onOpen();
     }
 
     @Override
     public void onClose(int i, String string, boolean bln) {
-        view.log("closed: " + i + ", " + bln + ", " + string);
+        //view.log("closed: " + i + ", " + bln + ", " + string);
         view.onClose();
     }
 
     @Override
     public void onMessage(String string) {
-        view.log("message: " + string);
+        //view.log("message: " + string);
     }
 
     @Override
@@ -100,7 +100,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
     public void onMessage(ByteBuffer bytes) { // TODO: use first two bytes
         byte[] b = bytes.array();
         if (b.length < 3) {
-            view.log("too short");
+            //view.log("too short");
             return;
         }
         int[] data = new int[b.length];
@@ -176,15 +176,15 @@ final class MySlitherWebSocketClient extends WebSocketClient {
                 processKill(data);
                 break;
             default:
-                view.log("Unknown command: " + cmd);
+                //view.log("Unknown command: " + cmd);
         }
     }
 
     private void processPreInitResponse(int[] data) {
-        view.log("sending decrypted, manipulated secret");
+        //view.log("sending decrypted, manipulated secret");
         send(decodeSecret(data));
 
-        view.log("sending init-request");
+        //view.log("sending init-request");
         send(initRequest);
     }
 
@@ -227,7 +227,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
 
     private void processInitResponse(int[] data) {
         if (data.length != 26) {
-            view.log("init response wrong length!");
+            //view.log("init response wrong length!");
             return;
         }
 
@@ -256,7 +256,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
 
     private void processUpdateBodyparts(int[] data, char cmd) {
         if (data.length != 8 && data.length != 7 && data.length != 6) {
-            view.log("update body-parts wrong length!");
+            //view.log("update body-parts wrong length!");
             return;
         }
 
@@ -301,7 +301,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
                     newWang = getNewAngle(data[6]);
                     break;
                 default:
-                    view.log("update body-parts invalid cmd/length: " + cmd + ", " + data.length);
+                    //view.log("update body-parts invalid cmd/length: " + cmd + ", " + data.length);
                     return;
             }
         } else if (data.length == 6) {
@@ -321,7 +321,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
                     newSpeed = getNewSpeed(data[5]);
                     break;
                 default:
-                    view.log("update body-parts invalid cmd/length: " + cmd + ", " + data.length);
+                    //view.log("update body-parts invalid cmd/length: " + cmd + ", " + data.length);
                     return;
             }
         }
@@ -353,7 +353,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
 
     private void processUpdateFam(int[] data) {
         if (data.length != 8) {
-            view.log("update fam wrong length!");
+            //view.log("update fam wrong length!");
             return;
         }
         int snakeID = (data[3] << 8) | data[4];
@@ -365,7 +365,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
 
     private void processRemoveSnakePart(int[] data) {
         if (data.length != 5 && data.length != 8) {
-            view.log("remove snake part wrong length!");
+            //view.log("remove snake part wrong length!");
         }
         int snakeID = (data[3] << 8) | data[4];
         synchronized (view.modelLock) {
@@ -383,7 +383,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
         boolean newBodyPart = cmd == 'n' || cmd == 'N';
 
         if (data.length != 5 + (absoluteCoords ? 4 : 2) + (newBodyPart ? 3 : 0)) {
-            view.log("update snake body wrong length!");
+            //view.log("update snake body wrong length!");
             return;
         }
 
@@ -419,7 +419,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
 
     private void processLeaderboard(int[] data) {
         if (data.length < 8 + 10 * 7) {
-            view.log("leaderboard wrong length!");
+            //view.log("leaderboard wrong length!");
             return;
         }
 
@@ -446,28 +446,29 @@ final class MySlitherWebSocketClient extends WebSocketClient {
 
     private void processDead(int[] data) {
         if (data.length != 4) {
-            view.log("dead wrong length!");
+            //view.log("dead wrong length!");
             return;
         }
         int deathReason = data[3];
         switch (deathReason) {
             case 0:
+
                 view.log("You died.");
                 break;
             case 1:
                 view.log("You've achieved a new record!");
                 break;
             case 2:
-                view.log("Death reason 2, unknown");
+                //view.log("Death reason 2, unknown");
                 break;
             default:
-                view.log("invalid death reason: " + deathReason + "!");
+                //view.log("invalid death reason: " + deathReason + "!");
         }
     }
 
     private void processAddSector(int[] data) {
         if (data.length != 5) {
-            view.log("add sector wrong length!");
+            //view.log("add sector wrong length!");
             return;
         }
 
@@ -479,7 +480,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
 
     private void processRemoveSector(int[] data) {
         if (data.length != 5) {
-            view.log("remove sector wrong length!");
+            //view.log("remove sector wrong length!");
             return;
         }
 
@@ -491,7 +492,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
 
     private void processGlobalHighscore(int[] data) {
         if (data.length < 10) {
-            view.log("global highscore wrong length");
+            //view.log("global highscore wrong length");
             return;
         }
 
@@ -509,12 +510,12 @@ final class MySlitherWebSocketClient extends WebSocketClient {
             message.append((char) data[10 + nameLength + i]);
         }
 
-        view.log("Received Highscore of the day: " + name.toString() + " (" + model.getSnakeLength(bodyLength, fillAmount) + "): " + message.toString());
+        //view.log("Received Highscore of the day: " + name.toString() + " (" + model.getSnakeLength(bodyLength, fillAmount) + "): " + message.toString());
     }
 
     private void processPong(int[] data) {
         if (data.length != 3) {
-            view.log("pong wrong length!");
+            //view.log("pong wrong length!");
             return;
         }
 
@@ -585,13 +586,13 @@ final class MySlitherWebSocketClient extends WebSocketClient {
             int id = (data[3] << 8) | (data[4]);
             model.removeSnake(id);
         } else {
-            view.log("add/remove snake wrong length!");
+            //view.log("add/remove snake wrong length!");
         }
     }
 
     private void processAddFood(int[] data, boolean allowMultipleEntities, boolean fastSpawn) {
         if ((!allowMultipleEntities && data.length != 9) || (allowMultipleEntities && (data.length < 9 || ((data.length - 9) % 6 != 0)))) {
-            view.log("add food wrong length!");
+            //view.log("add food wrong length!");
             return;
         }
         for (int i = 8; i < data.length; i += 6) {
@@ -604,7 +605,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
 
     private void processRemoveFood(int[] data) {
         if (data.length != 7 && data.length != 9) {
-            view.log("remove food wrong length!");
+            //view.log("remove food wrong length!");
             return;
         }
 
@@ -617,7 +618,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
     private void processUpdatePrey(int[] data) {
 
         if (data.length != 11 && data.length != 12 && data.length != 13 && data.length != 14 && data.length != 15 && data.length != 16 && data.length != 18) {
-            view.log("update prey wrong length!");
+            //view.log("update prey wrong length!");
             return;
         }
 
@@ -684,13 +685,13 @@ final class MySlitherWebSocketClient extends WebSocketClient {
             double sp = ((data[20] << 8) | data[21]) / 1000.0;
             model.addPrey(id, x, y, radius, dir, wang, ang, sp);
         } else {
-            view.log("add/remove prey wrong length!");
+            //view.log("add/remove prey wrong length!");
         }
     }
 
     private void processKill(int[] data) {
         if (data.length != 8) {
-            view.log("kill wrong length!");
+            //view.log("kill wrong length!");
             return;
         }
 
@@ -700,7 +701,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
         if (id == model.snake.id) {
             view.setKills(kills);
         } else {
-            view.log("kill packet with invalid id: " + id);
+            //view.log("kill packet with invalid id: " + id);
         }
     }
 
@@ -716,7 +717,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
         }
 
         // pre-init request
-        view.log("sending pre-init request");
+        //view.log("sending pre-init request");
         send(new byte[]{99});
     }
 

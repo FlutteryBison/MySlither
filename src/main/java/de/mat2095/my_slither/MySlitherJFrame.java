@@ -82,7 +82,8 @@ final class MySlitherJFrame extends JFrame {
         "61 - glowy-colorful",
         "62 - purple spiral",
         "63 - red/black",
-        "64 - blue/black"
+        "64 - blue/black",
+        "65 - random"
     };
 
     // TODO: skins, prey-size, snake-length/width, bot-layer, that-other-thing(?), show ping
