@@ -6,13 +6,14 @@ import java.util.Random;
 
 class Food {
 
-    private static final Color FOOD_COLORS[] = new Color[]{new Color(0xCC7832), new Color(0xAA0012), new Color(0x106A0)};
 
     final int x, y;
     private final double size;
     private final double rsp;
     private final long spawnTime;
-    private Color col;
+
+    private final Color colors[] = {new Color(0xFF0000), new Color(0xFFFF00), new Color(0x00FF00), new Color(0x0000FF)};
+    private Color color;
 
     Food(int x, int y, double size, boolean fastSpawn) {
         this.x = x;
@@ -20,7 +21,8 @@ class Food {
         this.size = size;
         this.rsp = fastSpawn ? 4 : 1;
         spawnTime = System.currentTimeMillis();
-        this.col = FOOD_COLORS[new Random().nextInt(FOOD_COLORS.length)];
+
+        color = colors[new Random().nextInt(colors.length)];
 
     }
 
@@ -41,5 +43,5 @@ class Food {
      * returns the color of the food.
      * @return //the color of the food.
      */
-    Color getCol() { return col; }
+    public Color getColor(){ return color;}
 }

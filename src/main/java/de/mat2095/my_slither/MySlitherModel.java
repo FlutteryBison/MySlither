@@ -27,7 +27,9 @@ class MySlitherModel {
 
     private final MySlitherJFrame view;
 
-    Snake snake;
+    Snake snake; //our snake
+    int snakeID;
+    int mainLength;
 
     MySlitherModel(int gameRadius, int sectorSize, double spangdv, double nsp1, double nsp2, double nsp3, double mamu1, double mamu2, double cst, int mscps, MySlitherJFrame view) {
         this.gameRadius = gameRadius;
@@ -53,6 +55,7 @@ class MySlitherModel {
         }
 
         lastUpdateTime = System.currentTimeMillis();
+        mainLength = 10;
     }
 
     int getSnakeLength(int bodyLength, double fillAmount) {
@@ -213,9 +216,20 @@ class MySlitherModel {
         }
     }
 
-    void removeFood(int x, int y) {
+    void removeFood(int x, int y, int[] data) {
+        int mySnakeID = (data[3] << 8) | (data[4]);
         synchronized (view.modelLock) {
+            if (data.length == 9 && mySnakeID == snake.getSnakeId())/*&& getSnakeLength(snake.body.size(), snake.getFam()) != mainLength)/*&& snake == snakes.get((data[3] << 8) | (data[4]))*/{
+                snake.setColor(foods.get(y * gameRadius * 3 + x).getColor());
+                mainLength = getSnakeLength(snake.body.size(), snake.getFam());
+            }
             foods.remove(y * gameRadius * 3 + x);
+            /*System.out.println("_______________");
+            for (int i = 0; i < data.length; i++){
+                System.out.print(data[i] + ",");
+            }
+            System.out.println("_______________");*/
+
         }
     }
 

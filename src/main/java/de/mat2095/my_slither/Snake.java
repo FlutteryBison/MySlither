@@ -1,6 +1,7 @@
 package de.mat2095.my_slither;
 
 import java.util.Deque;
+import java.awt.Color;
 
 
 class Snake {
@@ -15,6 +16,7 @@ class Snake {
     //TODO store color in each body part paint this color in paint component method in MySlitherCanvas
     final Deque<SnakeBodyPart> body;
     private final MySlitherModel model;
+    private Color color;
 
     Snake(int id, String name, double x, double y, double wang, double ang, double sp, double fam, Deque<SnakeBodyPart> body, MySlitherModel model) {
         this.id = id;
@@ -30,6 +32,10 @@ class Snake {
         this.body = body;
         this.model = model;
     }
+
+    public void setColor(Color color){this.color = color; }
+    public Color getColor(){return color;}
+    public int getSnakeId(){return id;}
 
     private double getSc() {
         return Math.min(6, 1 + (body.size() - 2) / 106.0);

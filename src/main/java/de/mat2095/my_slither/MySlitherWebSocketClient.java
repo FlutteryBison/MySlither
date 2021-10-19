@@ -612,7 +612,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
         int x = (data[3] << 8) | data[4];
         int y = (data[5] << 8) | data[6];
 
-        model.removeFood(x, y);
+        model.removeFood(x, y, data);
     }
 
     private void processUpdatePrey(int[] data) {
