@@ -383,34 +383,26 @@ final class MySlitherWebSocketClient extends WebSocketClient {
         boolean newBodyPart = cmd == 'n' || cmd == 'N';
 
         if (data.length != 5 + (absoluteCoords ? 4 : 2) + (newBodyPart ? 3 : 0)) {
-            //view.log("update snake body wrong length!");
+            view.log("update snake body wrong length!");
             return;
         }
 
         int snakeID = (data[3] << 8) | data[4];
 
         synchronized (view.modelLock) {
-            double newX = 0;
-            double newY = 0;
             Snake snake = model.getSnake(snakeID);
+            SnakeBodyPart head = snake.body.getFirst();
 
-            //add two snake parts
-            for(int i=0; i<2; i++)
-            {
-                SnakeBodyPart head = snake.body.getFirst();
+            double newX = absoluteCoords ? (data[5] << 8) | data[6] : head.x + data[5] - 128;
+            double newY = absoluteCoords ? (data[7] << 8) | data[8] : head.y + data[6] - 128;
 
-                newX = absoluteCoords ? (data[5] << 8) | data[6] : head.x + data[5] - 128;
-                newY = absoluteCoords ? (data[7] << 8) | data[8] : head.y + data[6] - 128;
-
-                if (newBodyPart) {
-                    snake.setFam(((data[absoluteCoords ? 9 : 7] << 16) | (data[absoluteCoords ? 10 : 8] << 8) | (data[absoluteCoords ? 11 : 9])) / ANGLE_CONSTANT);
-                } else {
-                    snake.body.pollLast();
-                }
-
-                snake.body.addFirst(new SnakeBodyPart(newX, newY));
+            if (newBodyPart) {
+                snake.setFam(((data[absoluteCoords ? 9 : 7] << 16) | (data[absoluteCoords ? 10 : 8] << 8) | (data[absoluteCoords ? 11 : 9])) / ANGLE_CONSTANT);
+            } else {
+                snake.body.pollLast();
             }
 
+            snake.body.addFirst(new SnakeBodyPart(newX, newY));
 
             snake.x = newX;
             snake.y = newY;
