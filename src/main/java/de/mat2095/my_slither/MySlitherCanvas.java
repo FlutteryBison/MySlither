@@ -14,11 +14,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
+import java.util.Random;
 
 
 final class MySlitherCanvas extends JPanel {
 
-    private static final Color BACKGROUND_COLOR = new Color(0x2B2B2B);
+    private final Color colorList[] = {new Color(0x708090), new Color(0xAFEEEE), new Color(0xB0C4DE)};
+    private Color BACKGROUND_COLOR;
     private static final Color FOREGROUND_COLOR = new Color(0xA9B7C6);
     private static final Color SECTOR_COLOR = new Color(0x803C3F41, true);
     private static final Color PREY_COLOR = new Color(0xFFFF00);
@@ -71,6 +73,8 @@ final class MySlitherCanvas extends JPanel {
         super();
         this.view = view;
 
+        BACKGROUND_COLOR = colorList[new Random().nextInt(colorList.length)];
+        //select random color from list
         setBackground(BACKGROUND_COLOR);
         setForeground(FOREGROUND_COLOR);
 
