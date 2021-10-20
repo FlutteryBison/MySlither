@@ -335,6 +335,15 @@ final class MySlitherJFrame extends JFrame {
 
     private void connect() {
         new Thread(() -> {
+
+            //start loading screen animation while connection is made
+            Component comp = rightSplitPane.getLeftComponent();
+            LoadingCanvas loadAnim = new LoadingCanvas();
+            rightSplitPane.setLeftComponent(loadAnim);
+
+            Thread t = new Thread(loadAnim);
+            t.start();
+
             if (status != Status.DISCONNECTED) {
                 throw new IllegalStateException("Connecting while not disconnected");
             }
@@ -355,6 +364,9 @@ final class MySlitherJFrame extends JFrame {
             if (status == Status.CONNECTING) {
                 trySingleConnect();
             }
+
+            rightSplitPane.setLeftComponent(comp);
+            loadAnim.endAnim();
         }).start();
     }
 
@@ -377,7 +389,13 @@ final class MySlitherJFrame extends JFrame {
         }
 
         log("connecting to " + client.getURI() + " ...");
-        client.connect();
+        try{
+            client.connectBlocking();
+        }catch(InterruptedException e){
+            log("connecting to " + client.getURI() + " ...");
+            client.connect();
+        }
+
     }
 
     private void disconnect() {
