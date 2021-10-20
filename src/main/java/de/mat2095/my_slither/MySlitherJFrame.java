@@ -296,6 +296,7 @@ final class MySlitherJFrame extends JFrame {
         switch (status) {
             case CONNECTING:
                 setStatus(Status.CONNECTED);
+
                 if(snake.getSelectedIndex() == 65)
                 {
                     Random rand = new Random();

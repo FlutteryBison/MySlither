@@ -383,7 +383,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
         boolean newBodyPart = cmd == 'n' || cmd == 'N';
 
         if (data.length != 5 + (absoluteCoords ? 4 : 2) + (newBodyPart ? 3 : 0)) {
-            view.log("update snake body wrong length!");
+            //view.log("update snake body wrong length!");
             return;
         }
 
