@@ -422,6 +422,7 @@ final class MySlitherWebSocketClient extends WebSocketClient {
 
         int rank = 0;
         int cursorPosition = 8;
+        boolean top10 = false;
         while (cursorPosition + 6 < data.length) {
             int bodyLength = (data[cursorPosition] << 8) | data[cursorPosition + 1];
             double fillAnount = ((data[cursorPosition + 2] << 16) | (data[cursorPosition + 3] << 8) | (data[cursorPosition + 4])) / ANGLE_CONSTANT;
@@ -432,7 +433,14 @@ final class MySlitherWebSocketClient extends WebSocketClient {
             }
             cursorPosition += 7 + nameLength;
             rank++;
-            view.setHighscoreData(rank - 1, name.toString(), model.getSnakeLength(bodyLength, fillAnount), ownRank == rank);
+            if(ownRank == rank)
+                top10 = true;
+            view.setHighscoreData(rank - 1,rank - 1, name.toString(), model.getSnakeLength(bodyLength, fillAnount), ownRank == rank);
+        }
+
+        if(!top10)
+        {
+            view.addPlayerToHighscore(ownRank);
         }
     }
 

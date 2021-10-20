@@ -58,6 +58,8 @@ class MySlitherModel {
         mainLength = 10;
     }
 
+    public String getOwnSnakeName(){return snake.name;}
+
     int getSnakeLength(int bodyLength, double fillAmount) {
         bodyLength = Math.min(bodyLength, mscps);
         return (int) (15 * (fpsls[bodyLength] + fillAmount * fmlts[bodyLength]) - 20);

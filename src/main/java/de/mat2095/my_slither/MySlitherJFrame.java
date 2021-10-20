@@ -241,12 +241,14 @@ final class MySlitherJFrame extends JFrame {
             }
         });
 
-        highscoreList = new JTable(10, 2);
+        highscoreList = new JTable(11, 3);
         highscoreList.setEnabled(false);
-        highscoreList.getColumnModel().getColumn(0).setMinWidth(64);
-        highscoreList.getColumnModel().getColumn(1).setMinWidth(192);
-        highscoreList.getColumnModel().getColumn(0).setHeaderValue("length");
-        highscoreList.getColumnModel().getColumn(1).setHeaderValue("name");
+        highscoreList.getColumnModel().getColumn(0).setMinWidth(26);
+        highscoreList.getColumnModel().getColumn(1).setMinWidth(64);
+        highscoreList.getColumnModel().getColumn(2).setMinWidth(166);
+        highscoreList.getColumnModel().getColumn(0).setHeaderValue("Rank");
+        highscoreList.getColumnModel().getColumn(1).setHeaderValue("Length");
+        highscoreList.getColumnModel().getColumn(2).setHeaderValue("Name");
         highscoreList.getTableHeader().setReorderingAllowed(false);
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -436,10 +438,26 @@ final class MySlitherJFrame extends JFrame {
         kills.setText(String.valueOf(newKills));
     }
 
-    void setHighscoreData(int row, String name, int length, boolean highlighted) {
-        highscoreList.setValueAt(highlighted ? "<html><b>" + length + "</b></html>" : length, row, 0);
-        highscoreList.setValueAt(highlighted ? "<html><b>" + name + "</b></html>" : name, row, 1);
+    /**
+     * adds a record to the highscore table. with option of highlighting it
+     * @param row         //row to add highscore to.
+     * @param rank        //rank to display.
+     * @param name        //name of player.
+     * @param length      //Body length or score to be displayed
+     * @param highlighted //Whether to highlight the record
+     */
+    void setHighscoreData(int row,int rank, String name, int length, boolean highlighted) {
+        highscoreList.setValueAt(highlighted ? "<html><b>" + rank + 1 + "</b></html>" : rank+1, row, 0);
+        highscoreList.setValueAt(highlighted ? "<html><b>" + length + "</b></html>" : length, row, 1);
+        highscoreList.setValueAt(highlighted ? "<html><b>" + name + "</b></html>" : name, row, 2);
     }
+    void addPlayerToHighscore(int rank)
+    {
+        highscoreList.setValueAt("<html><b>" + rank + "</b></html>", 10, 0);
+        //highscoreList.setValueAt("<html><b>" + length + "</b></html>", 10, 1);  //TODO add own player score
+        highscoreList.setValueAt("<html><b>" + model.getOwnSnakeName() + "</b></html>", 10, 2);
+    }
+
 
     private enum Status {
         DISCONNECTED("connect", false, true, true),
