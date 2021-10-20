@@ -217,19 +217,13 @@ class MySlitherModel {
     }
 
     void removeFood(int x, int y, int[] data) {
-        int mySnakeID = (data[3] << 8) | (data[4]);
+        int mySnakeID = (data[7] << 8) | (data[8]);
         synchronized (view.modelLock) {
-            if (data.length == 9 && mySnakeID == snake.getSnakeId())/*&& getSnakeLength(snake.body.size(), snake.getFam()) != mainLength)/*&& snake == snakes.get((data[3] << 8) | (data[4]))*/{
+            if (data.length == 9 && mySnakeID == snake.getSnakeId()){
                 snake.setColor(foods.get(y * gameRadius * 3 + x).getColor());
                 mainLength = getSnakeLength(snake.body.size(), snake.getFam());
             }
             foods.remove(y * gameRadius * 3 + x);
-            /*System.out.println("_______________");
-            for (int i = 0; i < data.length; i++){
-                System.out.print(data[i] + ",");
-            }
-            System.out.println("_______________");*/
-
         }
     }
 
