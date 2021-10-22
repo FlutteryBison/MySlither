@@ -297,5 +297,7 @@ final class MySlitherCanvas extends JPanel {
         }
         g.drawString("FPS: " + Math.round(fps), 0, g.getFontMetrics().getAscent());
         lastFrameTime = newFrameTime;
+
+        g.drawString("Press Connect, then control the snake with the mouse and click to speed up, Good luck have fun :)", 200, g.getFontMetrics().getAscent());
     }
 }
