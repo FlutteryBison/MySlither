@@ -291,6 +291,7 @@ final class MySlitherCanvas extends JPanel {
 
         g.setFont(DEBUG_FONT);
         g.setColor(FOREGROUND_COLOR);
+        g.setColor(Color.BLACK);
         long newFrameTime = System.currentTimeMillis();
         if (newFrameTime > lastFrameTime) {
             fps = 0.95 * fps + 0.05 * 1000.0 / (newFrameTime - lastFrameTime);
